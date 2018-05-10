@@ -7,7 +7,7 @@ namespace MistrzowieWynajmu.Models
 {
     public class Property
     {
-        public int IdProperty { get; set; }
+        public int PropertyId { get; set; }
         public int NumberOfRooms { get; set; }
         public double Area { get; set; }
         public PropertyType Type { get; set; }
