@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using MistrzowieWynajmu.Models;
 using MistrzowieWynajmu.Models.Interfaces;
 
 namespace MistrzowieWynajmu.Controllers
@@ -14,10 +14,14 @@ namespace MistrzowieWynajmu.Controllers
     public class PropertyController : Controller
     {
         private readonly IPropertyRepository _propertyRepository;
+        private readonly IOwnerRepository _ownerRepository;
+        private readonly IAddressRepository _addressRepository;
 
-        public PropertyController(IPropertyRepository propertyRepository)
+        public PropertyController(IPropertyRepository propertyRepository, IOwnerRepository ownerRepository, IAddressRepository addressRepository)
         {
             _propertyRepository = propertyRepository;
+            _ownerRepository = ownerRepository;
+            _addressRepository = addressRepository;
         }
 
         [HttpGet("[action]")]
@@ -28,13 +32,76 @@ namespace MistrzowieWynajmu.Controllers
         [HttpPost("[action]")]
         public IActionResult AddProperty([FromBody] Property property)
         {
-            return NotFound();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var owner = _ownerRepository.GetOwner(property.Owner.OwnerId);
+            if (owner == null)
+            {
+                return NotFound("Nie można znaleźć właściciela");
+            }
+
+            var address = _addressRepository.GetAddress(property.Address.AddressId);
+            if (address == null)
+            {
+                return NotFound("Nie można znaleźć adresu");
+            }
+
+            _propertyRepository.AddProperty(property, address, owner);
+
+            return new JsonResult(property);
+        }
+        [HttpGet("[action]")]
+        public IActionResult GetProperty(int propertyId)
+        {
+            if (propertyId<=0)
+            {
+                return BadRequest("PropertyID nie może być mniejsze niż 0");
+            }
+
+            return new JsonResult(_propertyRepository.GetProperty(propertyId));
         }
 
-        [HttpPut("[action]")]
-        public IActionResult Update(Property property)
+        [HttpPost("[action]")]
+        public IActionResult UpdateProperty([FromBody] Property property)
         {
-            _propertyRepository.EditProperty(property);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _propertyRepository.UpdateProperty(property);
+            return new JsonResult(property);
+        }
+        [HttpDelete("[action]")]
+        public IActionResult DeleteProperty(int propertyId)
+        {
+            if (propertyId <= 0)
+            {
+                return BadRequest("PropertyID nie może być mniejsze niż 0");
+            }
+            var property = _propertyRepository.GetProperty(propertyId);
+            if (property == null)
+            {
+                return NotFound("Nie można znaleźć property");
+            }
+            var owner = _ownerRepository.GetOwner(property.Owner.OwnerId);
+            if (owner == null)
+            {
+                return NotFound("Nie można znaleźć właściciela");
+            }
+            var address = _addressRepository.GetAddress(property.Address.AddressId);
+            if (address == null)
+            {
+                return NotFound("Nie można znaleźć adresu");
+            }
+
+            _propertyRepository.DeleteProperty(property, address, owner);
+
+
+            return new JsonResult(property);
         }
     }
 }
