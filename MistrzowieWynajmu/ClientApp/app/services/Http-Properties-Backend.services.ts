@@ -1,11 +1,11 @@
 ﻿import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { Property } from '../models/property';
-import { PropertiesBackendServices } from '../services/properties-backend.services';
+import { PropertiesBackendService } from '../services/properties-backend.services';
 import { Http, RequestOptions, Headers, Response } from '@angular/http';
 @Injectable()
 
-export class HttpPropertiesBackendService extends PropertiesBackendServices
+export class HttpPropertiesBackendService extends PropertiesBackendService
 {
 
     private addPropertyUrl: string = "api/property/addproperty";

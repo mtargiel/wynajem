@@ -4,7 +4,7 @@ import { Property } from '../models/property';
 
 
 @Injectable()
-export abstract class PropertiesBackendServices {
+export abstract class PropertiesBackendService {
     abstract addProperty(newProperty: Property): Observable<number>;
     abstract getProperty(id: number): Observable<Property>;
     abstract getProperties(): Observable<Property[]>;

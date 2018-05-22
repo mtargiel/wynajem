@@ -1,13 +1,13 @@
 ﻿import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator.map';
+import 'rxjs/add/operator/map';
 import { Property } from '../../../models/property';
-import { PropertiesBackendServices } from '../../../services/properties-backend.services';
+import { PropertiesBackendService } from '../../../services/properties-backend.services';
 
 @Injectable()
-export class PropertyService {
-    constructor(private propertiesBackendService: PropertiesBackendServices) {
+export class PropertiesService {
+    constructor(private propertiesBackendService: PropertiesBackendService) {
 
     }
     addProperty(newProperty: Property): Observable<number> {

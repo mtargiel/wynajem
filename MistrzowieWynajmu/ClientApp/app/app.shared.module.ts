@@ -10,13 +10,21 @@ import { HomeComponent } from './components/home/home.component';
 import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
 import { CounterComponent } from './components/counter/counter.component';
 
+
+//**properties Sectin**\\\
+import { PropertiesComponent } from './components/property/properties.component';
+import { PropertiesService } from './components/property/services/properties.service'
+import { PropertiesBackendService } from './services/properties-backend.services';
+import { HttpPropertiesBackendService } from './services/Http-Properties-Backend.services';
+
 @NgModule({
     declarations: [
         AppComponent,
         NavMenuComponent,
         CounterComponent,
         FetchDataComponent,
-        HomeComponent
+        HomeComponent,
+        PropertiesComponent
     ],
     imports: [
         CommonModule,
@@ -27,8 +35,13 @@ import { CounterComponent } from './components/counter/counter.component';
             { path: 'home', component: HomeComponent },
             { path: 'counter', component: CounterComponent },
             { path: 'fetch-data', component: FetchDataComponent },
+            { path: 'properties', component: PropertiesComponent },
             { path: '**', redirectTo: 'home' }
         ])
+    ],
+    providers: [
+        PropertiesService,
+        { provide: PropertiesBackendService, useClass: HttpPropertiesBackendService }
     ]
 })
 export class AppModuleShared {
