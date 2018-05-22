@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MistrzowieWynajmu.Models.Database;
 using MistrzowieWynajmu.Models.Interfaces;
+using MistrzowieWynajmu.Models.Repositories;
 using MistrzowieWynajmu.Models.Repository;
 
 namespace MistrzowieWynajmu
@@ -32,7 +33,8 @@ namespace MistrzowieWynajmu
 
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(dbContextString));
 
-
+            services.AddScoped<IOwnerRepository, OwnerRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IPropertyRepository, PropertyRepository>();
         }
 

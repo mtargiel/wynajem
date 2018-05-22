@@ -13,7 +13,7 @@ namespace MistrzowieWynajmu.Migrations
                 name: "Addresses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    AddressId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     City = table.Column<string>(nullable: true),
                     PostCode = table.Column<string>(nullable: true),
@@ -21,7 +21,7 @@ namespace MistrzowieWynajmu.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,7 +67,7 @@ namespace MistrzowieWynajmu.Migrations
                 name: "Owners",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    OwnerId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AddressId = table.Column<int>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
@@ -76,12 +76,12 @@ namespace MistrzowieWynajmu.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Owners", x => x.Id);
+                    table.PrimaryKey("PK_Owners", x => x.OwnerId);
                     table.ForeignKey(
                         name: "FK_Owners_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
-                        principalColumn: "Id",
+                        principalColumn: "AddressId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -215,13 +215,13 @@ namespace MistrzowieWynajmu.Migrations
                         name: "FK_Properties_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
-                        principalColumn: "Id",
+                        principalColumn: "AddressId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Properties_Owners_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "Owners",
-                        principalColumn: "Id",
+                        principalColumn: "OwnerId",
                         onDelete: ReferentialAction.Restrict);
                 });
 

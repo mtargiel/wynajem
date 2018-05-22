@@ -23,7 +23,6 @@ namespace MistrzowieWynajmu.Controllers
             _ownerRepository = ownerRepository;
             _addressRepository = addressRepository;
         }
-
         [HttpGet("[action]")]
         public IActionResult GetProperties()
         {
@@ -75,7 +74,7 @@ namespace MistrzowieWynajmu.Controllers
             _propertyRepository.UpdateProperty(property);
             return new JsonResult(property);
         }
-        [HttpDelete("[action]")]
+        [HttpGet("[action]")]
         public IActionResult DeleteProperty(int propertyId)
         {
             if (propertyId <= 0)
